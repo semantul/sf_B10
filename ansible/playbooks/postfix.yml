@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  gather_facts: false
+ 
+  tasks:
+  - name: Install Postfix
+    ansible.builtin.dnf:
+     name: "postfix"
+     state: "latest"
+    tags: "init"
+
+  - name: Start Postfix service
+    ansible.builtin.service:
+     name: "postfix"
+     state: "started"
+     enabled: "yes"
+    tags: "init"
+
+  - name: Remove postfix
+    ansible.builtin.dnf:
+     name: "postfix"
+     state: "absent"
+    tags: "drop"
