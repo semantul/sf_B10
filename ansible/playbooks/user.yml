@@ -1,0 +1,26 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Create user
+    ansible.builtin.user:
+     name: "user1"
+     groups: "sshd"
+     append: "yes"
+
+  - name: Create ssh dir
+    ansible.builtin.file:
+     dest: "~user1/.ssh"
+     state: "directory"
+     owner: "user1"
+     group: "user1"
+     mode: "0700"
+
+  - name: Copy key-file
+    ansible.builtin.copy:
+     src: "../file/id_rsa.pub"
+     dest: "~user1/.ssh/authorized_keys"
+     owner: "user1"
+     group: "user1"
+     mode: "0600"
