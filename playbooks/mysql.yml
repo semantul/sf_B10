@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: false
+ 
+  tasks:
+    - name: Install MySQL server
+      package:
+        name: mysql-server
+        state: latest
+ 
+    - name: Start MySQL service
+      service:
+        name: mysqld
+        state: started
+        enabled: yes
