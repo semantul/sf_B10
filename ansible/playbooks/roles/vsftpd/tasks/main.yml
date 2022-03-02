@@ -1,0 +1,11 @@
+---
+- name: Install FTP server VSFTPD
+  ansible.builtin.dnf:
+   name: "vsftpd"
+   state: "latest"
+
+- name: Start VSFTPD service
+  ansible.builtin.service:
+   name: "vsftpd"
+   state: "started"
+   enabled: "yes"
