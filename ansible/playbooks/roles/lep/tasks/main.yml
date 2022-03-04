@@ -1,0 +1,42 @@
+---
+- name: Install packages
+  ansible.builtin.dnf:
+   name:
+    - nginx
+    - php-fpm
+
+- name: Copy nginx configuration
+  ansible.builtin.copy:
+   src: "../files/my.conf"
+   dest: "/etc/nginx/conf.d/my.conf"
+
+- name: Copy PHP-FPM configuration
+  ansible.builtin.copy:
+   src: "../files/www.conf"
+   dest: "/etc/php-fpm.d/www.conf"
+   backup: true
+
+- name: Create index file
+  ansible.builtin.copy:
+   dest: "/usr/share/nginx/html/index.php"
+   content: "<?php phpinfo();?>"
+
+- name: Start php-fpm service
+  ansible.builtin.service:
+   name: "php-fpm"
+   state: "started"
+   enabled: true
+
+- name: Start nginx service
+  ansible.builtin.service:
+   name: "nginx"
+   state: "started"
+   enabled: true
+
+- name: Change root directory
+  ansible.builtin.lineinfile:
+    path: "/etc/nginx/conf.d/my.conf"
+    regexp: "root  /usr/share/nginx/html;"
+    line: "{{'\t'}}root  /opt/nginx/ansible;"
+  notify: 
+  - Reload nginx

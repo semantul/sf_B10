@@ -1,0 +1,26 @@
+---
+- hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Create seperusers group
+    ansible.builtin.group:
+     name: "superusers"
+     state: "present"
+
+  - name: Add sperusers to sudoers
+    ansible.builtin.copy:
+     dest: /etc/sudoers.d/superusers
+     content: "%superusers ALL=(ALL)       NOPASSWD: ALL"
+
+  - name: Create user2
+    ansible.builtin.user:
+     name: "user2"
+     groups: "superusers"
+     append: "yes"
+
+  - name: Create user3
+    ansible.builtin.user:
+     name: "user2"
+     groups: "superusers"
+     append: "yes"

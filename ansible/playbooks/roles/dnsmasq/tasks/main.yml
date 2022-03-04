@@ -1,0 +1,11 @@
+---
+- name: Install dnsmasq
+  ansible.builtin.dnf:
+   name: "dnsmasq"
+   state: "latest"
+
+- name: Start dnsmasq service
+  ansible.builtin.service:
+   name: "dnsmasq"
+   state: "started"
+   enabled: true
